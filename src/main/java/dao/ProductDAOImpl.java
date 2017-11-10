@@ -57,7 +57,7 @@ public class ProductDAOImpl implements ProductDAO {
     public Set<Product> getAll() {
         Session session = HibernateLoader.getSessionFactory().getCurrentSession();
         session.beginTransaction();
-        List<Product> list = session.createQuery("from Product ", Product.class).list();
+        List<Product> list = session.createQuery("from model.Product ", Product.class).list();
         Set<Product> set = new HashSet<Product>(list);
         for (Product product: list) {
             logger.info("Product list: " + product);

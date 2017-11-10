@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -51,9 +49,9 @@ public class ProductController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Product product = new Product();
-        product.setName(request.getParameter("firstName"));
-        product.setPrice(Integer.parseInt(request.getParameter("lastName")));
-        //product.setManufacturer(request.getParameter();
+        product.setName(request.getParameter("name"));
+        product.setPrice(Integer.parseInt(request.getParameter("price")));
+        product.setManufacturer((Manufacturer) request.getAttribute("manufacture"));
         String productId = request.getParameter("productId");
         if (productId == null || productId.isEmpty()) {
             dao.addProduct(product);

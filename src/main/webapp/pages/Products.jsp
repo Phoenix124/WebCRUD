@@ -15,14 +15,16 @@
         <a href="ProductForm.jsp">Add New Product</a>
     </h2>
 <%
-    ProductDAOImpl dao = new ProductDAOImpl();
-    Set<Product> products = dao.getAll();
-    request.setAttribute("products", products);
+//    ProductDAOImpl dao = new ProductDAOImpl();
+//    Set<Product> products = dao.getAll();
+//    request.setAttribute("products", products);
+//    for (Product p : products)
 %>
 </center>
 <div align="center">
     <table border="1" cellpadding="5">
         <caption><h2>List of Products</h2></caption>
+        <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -30,19 +32,31 @@
             <th>Manufacturer</th>
             <th>Action</th>
         </tr>
-        <c:forEach items="${products}" var="product">
+        <%--<c:forEach items="${products}" var="product">--%>
             <tr>
-                <td><c:out value="${product.id}" /></td>
-                <td><c:out value="${product.name}" /></td>
-                <td><c:out value="${product.price}" /></td>
-                <td><c:out value="${product.manufacturer}" /></td>
+                </thead>
+                <tbody>
+                    <%
+                     ProductDAOImpl dao = new ProductDAOImpl();
+                     Set<Product> products = dao.getAll();
+                     for (Product u : products) {
+                 %>
+                <tr>
+                    <td><%=u.getId()%></td>
+                    <td><%=u.getName()%></td>
+                    <td><%=u.getPrice()%></td>
+                    <td><%=u.getManufacturer()%></td>
+                </tr>
+                    <%}%>
+                <tbody>
                 <td>
                     <a href="<c:url value="/pages/editFormProduct.jsp?id=<c:out value='${product.id}' />"/>">Edit</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="<c:url value="/pages/deleteProduct.jsp?id=<c:out value='${product.id}' />"/>">Delete</a>
                 </td>
-            </tr>
-        </c:forEach>
+
+        <%--</c:forEach>--%>
+
     </table>
 </div>
 </body>
