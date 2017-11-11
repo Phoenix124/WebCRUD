@@ -27,7 +27,7 @@ public class ManufacturerController extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action.equalsIgnoreCase("delete")) {
-            int manufaterId = Integer.parseInt(request.getParameter("manufaterId"));
+            int manufaterId = Integer.parseInt(request.getParameter("manufacturerId"));
             dao.deleteManufacter(manufaterId);
             forward = LIST_MMANUFACTERES;
             request.setAttribute("manufacturers", dao.getAll());
@@ -36,7 +36,7 @@ public class ManufacturerController extends HttpServlet {
             int manufacturerId = Integer.parseInt(request.getParameter("manufacturerId"));
             Manufacturer manufacturer = dao.getById(manufacturerId);
             request.setAttribute("manufacturer", manufacturer);
-        } else if (action.equalsIgnoreCase("listProducts")) {
+        } else if (action.equalsIgnoreCase("listManufacturers")) {
             forward = LIST_MMANUFACTERES;
             request.setAttribute("manufacturers", dao.getAll());
         } else {

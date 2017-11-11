@@ -3,7 +3,7 @@ package model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product")
+@Table(name = "product",catalog = "management")
 public class Product {
 
     @Id
@@ -18,7 +18,7 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "manufacturer_products",
-            joinColumns = @JoinColumn(name = "manufaturer_id",referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "manufacturer_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
     private Manufacturer manufacturer;
 

@@ -14,12 +14,6 @@
     <h2>
         <a href="ProductForm.jsp">Add New Product</a>
     </h2>
-<%
-//    ProductDAOImpl dao = new ProductDAOImpl();
-//    Set<Product> products = dao.getAll();
-//    request.setAttribute("products", products);
-//    for (Product p : products)
-%>
 </center>
 <div align="center">
     <table border="1" cellpadding="5">
@@ -32,31 +26,26 @@
             <th>Manufacturer</th>
             <th>Action</th>
         </tr>
-        <%--<c:forEach items="${products}" var="product">--%>
             <tr>
                 </thead>
                 <tbody>
                     <%
                      ProductDAOImpl dao = new ProductDAOImpl();
                      Set<Product> products = dao.getAll();
-                     for (Product u : products) {
+                     for (Product product : products) {
                  %>
                 <tr>
-                    <td><%=u.getId()%></td>
-                    <td><%=u.getName()%></td>
-                    <td><%=u.getPrice()%></td>
-                    <td><%=u.getManufacturer()%></td>
-                </tr>
+                    <td><%=product.getId()%></td>
+                    <td><%=product.getName()%></td>
+                    <td><%=product.getPrice()%></td>
+                    <td><%=product.getManufacturer()%></td>
+                    <td>
+                        <a href="<c:url value='/editProduct?id=${product.id}'/>">Edit</a>
+                        <a href="<c:url value='/deleteProduct?id=${product.id}'/>">Delete</a>
+                    </td>
                     <%}%>
+                </tr>
                 <tbody>
-                <td>
-                    <a href="<c:url value="/pages/editFormProduct.jsp?id=<c:out value='${product.id}' />"/>">Edit</a>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="<c:url value="/pages/deleteProduct.jsp?id=<c:out value='${product.id}' />"/>">Delete</a>
-                </td>
-
-        <%--</c:forEach>--%>
-
     </table>
 </div>
 </body>

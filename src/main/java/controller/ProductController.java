@@ -14,7 +14,7 @@ import java.io.IOException;
 public class ProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static String INSERT_OR_EDIT = "web/pages/Products.jsp";
-    private static String LIST_PRODUCTS = "web/pages/Products";
+    private static String LIST_PRODUCTS = "web/pages/Products.jsp";
     private ProductDAOImpl dao;
 
     public ProductController() {
@@ -26,19 +26,19 @@ public class ProductController extends HttpServlet {
         String forward = "";
         String action = request.getParameter("action");
 
-        if (action.equalsIgnoreCase("delete")) {
+        if (action.equalsIgnoreCase("deleteProduct")) {
             int productId = Integer.parseInt(request.getParameter("productId"));
             dao.deleteProduct(productId);
             forward = LIST_PRODUCTS;
-            request.setAttribute("products", dao.getAll());
-        } else if (action.equalsIgnoreCase("edit")) {
+            request.setAttribute("deleteProduct", dao.getAll());
+        } else if (action.equalsIgnoreCase("editProduct")) {
             forward = INSERT_OR_EDIT;
             int productId = Integer.parseInt(request.getParameter("productId"));
             Product product = dao.getById(productId);
-            request.setAttribute("product", product);
+            request.setAttribute("editProduct", product);
         } else if (action.equalsIgnoreCase("listProducts")) {
             forward = LIST_PRODUCTS;
-            request.setAttribute("products", dao.getAll());
+            request.setAttribute("listProducts", dao.getAll());
         } else {
             forward = INSERT_OR_EDIT;
         }
