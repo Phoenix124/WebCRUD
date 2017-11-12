@@ -6,15 +6,16 @@ import model.Product;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+@WebServlet(name="/ProductController")
 public class ProductController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private static String INSERT_OR_EDIT = "web/pages/Products.jsp";
-    private static String LIST_PRODUCTS = "web/pages/Products.jsp";
+    private static String INSERT_PRODUCT = "/pages/addProduct.jsp";
+    private static String EDIT_PRODUCT = "/pages/editProduct.jsp";
+    private static String LIST_PRODUCTS = "/pages/Products.jsp";
     private ProductDAOImpl dao;
 
     public ProductController() {
@@ -23,44 +24,55 @@ public class ProductController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = "";
+        String redirect="";
+        String uId = request.getParameter("productId");
         String action = request.getParameter("action");
-
-        if (action.equalsIgnoreCase("deleteProduct")) {
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            dao.deleteProduct(productId);
-            forward = LIST_PRODUCTS;
-            request.setAttribute("deleteProduct", dao.getAll());
-        } else if (action.equalsIgnoreCase("editProduct")) {
-            forward = INSERT_OR_EDIT;
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            Product product = dao.getById(productId);
-            request.setAttribute("editProduct", product);
-        } else if (action.equalsIgnoreCase("listProducts")) {
-            forward = LIST_PRODUCTS;
-            request.setAttribute("listProducts", dao.getAll());
+        if(!((uId)== null) && action.equalsIgnoreCase("insert"))
+        {
+            int id = Integer.parseInt(uId);
+            Product product = new Product();
+            product.setId((long) id);
+            product.setName(request.getParameter("Name"));
+            product.setPrice(Double.parseDouble(request.getParameter("price")));
+            product.setManufacturer((Manufacturer) request.getAttribute("manufacture"));
+            dao.addProduct(product);
+            redirect = LIST_PRODUCTS;
+            request.setAttribute("product", dao.getAll());
+            System.out.println("Record Added Successfully");
+        }
+        else if (action.equalsIgnoreCase("delete")){
+            String productId = request.getParameter("productId");
+            int uid = Integer.parseInt(productId);
+            dao.deleteProduct(uid);
+            redirect = LIST_PRODUCTS;
+            request.setAttribute("product", dao.getAll());
+            System.out.println("Record Deleted Successfully");
+        }else if (action.equalsIgnoreCase("editform")){
+            redirect = EDIT_PRODUCT;
+        } else if (action.equalsIgnoreCase("edit")){
+            String productId = request.getParameter("productId");
+            int uid = Integer.parseInt(productId);
+            Product product = new Product();
+            product.setId((long) uid);
+            product.setName(request.getParameter("Name"));
+            product.setPrice(Double.parseDouble(request.getParameter("price")));
+            product.setManufacturer((Manufacturer) request.getAttribute("manufacture"));
+            dao.updateProduct(product);
+            request.setAttribute("product", product);
+            redirect = LIST_PRODUCTS;
+            System.out.println("Record updated Successfully");
+        } else if (action.equalsIgnoreCase("listProducts")){
+            redirect = LIST_PRODUCTS;
+            request.setAttribute("products", dao.getAll());
         } else {
-            forward = INSERT_OR_EDIT;
+            redirect = INSERT_PRODUCT;
         }
 
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
+        RequestDispatcher rd = request.getRequestDispatcher(redirect);
+        rd.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Product product = new Product();
-        product.setName(request.getParameter("name"));
-        product.setPrice(Integer.parseInt(request.getParameter("price")));
-        product.setManufacturer((Manufacturer) request.getAttribute("manufacture"));
-        String productId = request.getParameter("productId");
-        if (productId == null || productId.isEmpty()) {
-            dao.addProduct(product);
-        } else {
-            product.setId(Long.parseLong(productId));
-            dao.updateProduct(product);
-        }
-        RequestDispatcher view = request.getRequestDispatcher(LIST_PRODUCTS);
-        request.setAttribute("products", dao.getAll());
-        view.forward(request, response);
+        doGet(request, response);
     }
 }

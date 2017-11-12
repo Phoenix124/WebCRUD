@@ -12,7 +12,7 @@
 <center>
     <h1>Products</h1>
     <h2>
-        <a href="ProductForm.jsp">Add New Product</a>
+        <a href="addProduct.jsp">Add New Product</a>
     </h2>
 </center>
 <div align="center">
@@ -40,8 +40,8 @@
                     <td><%=product.getPrice()%></td>
                     <td><%=product.getManufacturer()%></td>
                     <td>
-                        <a href="<c:url value='/editProduct?id=${product.id}'/>">Edit</a>
-                        <a href="<c:url value='/deleteProduct?id=${product.id}'/>">Delete</a>
+                        <a href="ProductController?action=editProduct&productId=<%=product.getId()%>">Edit</a>
+                        <a href="ProductController?action=deleteProduct&productId=<%=product.getId()%>">Delete</a>
                     </td>
                     <%}%>
                 </tr>
