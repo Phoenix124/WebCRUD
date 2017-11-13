@@ -4,75 +4,122 @@ import dao.ProductDAOImpl;
 import model.Manufacturer;
 import model.Product;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-@WebServlet(name="/ProductController")
+import java.io.PrintWriter;
+
+@WebServlet("/ProductController")
 public class ProductController extends HttpServlet {
-    private static String INSERT_PRODUCT = "/pages/addProduct.jsp";
-    private static String EDIT_PRODUCT = "/pages/editProduct.jsp";
-    private static String LIST_PRODUCTS = "/pages/Products.jsp";
-    private ProductDAOImpl dao;
 
-    public ProductController() {
-        super();
-        dao = new ProductDAOImpl();
-    }
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String redirect="";
-        String uId = request.getParameter("productId");
-        String action = request.getParameter("action");
-        if(!((uId)== null) && action.equalsIgnoreCase("insert"))
-        {
-            int id = Integer.parseInt(uId);
+        PrintWriter out = response.getWriter();
+
+
+        if(request.getParameter("insert") != null){
+
+            String productName = request.getParameter("name");
+            double price = Double.parseDouble(request.getParameter("price"));
+
             Product product = new Product();
-            product.setId((long) id);
-            product.setName(request.getParameter("Name"));
-            product.setPrice(Double.parseDouble(request.getParameter("price")));
+            product.setName(productName);
+            product.setPrice(price);
             product.setManufacturer((Manufacturer) request.getAttribute("manufacture"));
-            dao.addProduct(product);
-            redirect = LIST_PRODUCTS;
-            request.setAttribute("product", dao.getAll());
-            System.out.println("Record Added Successfully");
-        }
-        else if (action.equalsIgnoreCase("delete")){
-            String productId = request.getParameter("productId");
-            int uid = Integer.parseInt(productId);
-            dao.deleteProduct(uid);
-            redirect = LIST_PRODUCTS;
-            request.setAttribute("product", dao.getAll());
-            System.out.println("Record Deleted Successfully");
-        }else if (action.equalsIgnoreCase("editform")){
-            redirect = EDIT_PRODUCT;
-        } else if (action.equalsIgnoreCase("edit")){
-            String productId = request.getParameter("productId");
-            int uid = Integer.parseInt(productId);
+
+
+            boolean status =  new ProductDAOImpl().addProduct(product);
+            if(status){
+                request.getSession().setAttribute("sm", "Product saved successfully");
+            }else{
+                request.getSession().setAttribute("em", "Product not saved");
+            }
+
+            request.getRequestDispatcher("/addProduct.jsp").forward(request, response);
+
+
+        }else if(request.getParameter("update") != null){
+
+            String productName = request.getParameter("name");
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            double price = Double.parseDouble(request.getParameter("price"));
+
             Product product = new Product();
-            product.setId((long) uid);
-            product.setName(request.getParameter("Name"));
-            product.setPrice(Double.parseDouble(request.getParameter("price")));
+            product.setName(productName);
+            product.setPrice(price);
             product.setManufacturer((Manufacturer) request.getAttribute("manufacture"));
-            dao.updateProduct(product);
-            request.setAttribute("product", product);
-            redirect = LIST_PRODUCTS;
-            System.out.println("Record updated Successfully");
-        } else if (action.equalsIgnoreCase("listProducts")){
-            redirect = LIST_PRODUCTS;
-            request.setAttribute("products", dao.getAll());
-        } else {
-            redirect = INSERT_PRODUCT;
+            product.setId(productId);
+
+            boolean status =  new ProductDAOImpl().updateProduct(product);
+            if(status){
+                request.getSession().setAttribute("sm", "Product update successfully");
+            }else{
+                request.getSession().setAttribute("em", "Product not update");
+            }
+
+            request.getRequestDispatcher("/editProduct.jsp?productId=" + productId).forward(request, response);
+
+        }else if(request.getParameter("for").equalsIgnoreCase("delete")){
+
+            int productId = Integer.parseInt(request.getParameter("productId"));
+
+            Product p = ProductDAOImpl.getById(productId);
+
+            //out.println(p.toString());
+
+            boolean status =  new ProductDAOImpl().deleteProduct(p);
+
+            if(status){
+                request.getSession().setAttribute("sm", "Product deleted successfully");
+            }else{
+                request.getSession().setAttribute("em", "Product not deleted");
+            }
+
+            request.getRequestDispatcher("/addProduct.jsp").forward(request, response);
         }
-
-        RequestDispatcher rd = request.getRequestDispatcher(redirect);
-        rd.forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
 }

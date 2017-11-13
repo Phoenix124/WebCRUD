@@ -1,45 +1,67 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.List" %>
 <%@ page import="model.Manufacturer" %>
 <%@ page import="dao.ManufacturerDAOImpl" %>
-<%@ page import="java.util.List" %>
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.Arrays" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Manufaturers</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/style.css">
 </head>
 <body>
-<center>
-    <h1>Manufaturers</h1>
-    <h2>
-        <a href="ManufacturerForm.jsp">Add New Manufacturer</a>
-    </h2>
+<table border="1" style="border-collapse: collapse;" width="70%">
+    <thead>
+    <tr>
+        <th colspan="6">Product List Table</th>
+    </tr>
+    <tr>
+        <th>ID</th>
+        <th>Manufacturer Name</th>
+        <th>Products</th>
+        <th colspan="2">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+
     <%
-        ManufacturerDAOImpl dao = new ManufacturerDAOImpl();
-        List<Manufacturer> manufacturers = dao.getAll();
-        request.setAttribute("manufacturers", manufacturers);
+        List<Manufacturer> list = ManufacturerDAOImpl.getAll();
+        for(Manufacturer m : list){
     %>
-</center>
-    <table cellpadding="2" cellspacing="2" border="1">
-        <tr>
-            <th>ID</th>
-            <th>NAME</th>
-            <th>PRICE</th>
-            <th>MANUFACTER</th>
-            <th>DESCRIPTION</th>
-        </tr>
-        <c:forEach items="${manufacturers}" var="product">
-        <tr>
-            <td><c:out value="${product.id}" /></td>
-            <td><c:out value="${product.name}" /></td>
-            <td><c:out value="${product.price}" /></td>
-            <td><c:out value="${product.manufacturer}" /></td>
-            <td>
-                <a href="<c:url value="/pages/editFormProduct.jsp?id=<c:out value='${product.id}' />"/>">Edit</a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="<c:url value="/pages/deleteProduct.jsp?id=<c:out value='${product.id}' />"/>">Delete</a>
-            </td>
-        </tr>
-        </c:forEach>
+
+    <tr style="text-align: center;">
+        <td><%= m.getId() %></td>
+        <td><%= m.getName()%></td>
+        <td><%= m.getProducts()%></td>
+        <td><a href="editManufacturer.jsp?manufacturerId=<%= m.getId() %>"><button>Edit</button></a></td>
+        <td><a href="ManufactureController?manufacturerId=<%= m.getId() %>&&for=delete" onclick="return confirm('are you sure?')"><button>Delete</button></a></td>
+    </tr>
+
+    <% } %>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="6">
+            <font color="green">
+                <c:if test="${sessionScope.sm != null}">
+                    <c:out value="${sessionScope.sm}"/>
+                    <c:remove scope="session" var="sm"/>
+                </c:if>
+            </font>
+            <font color="red">
+                <c:if test="${sessionScope.em != null}">
+                    <c:out value="${sessionScope.em}"/>
+                    <c:remove scope="session" var="em"/>
+                </c:if>
+            </font>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+<h2>
+    <a href="addProduct.jsp">Add New Product</a>
+</h2>
 </body>
 </html>

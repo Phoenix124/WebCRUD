@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class ManufacturerDAOImpl implements ManufacturerDAO {
+public class ManufacturerDAOImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(ManufacturerDAOImpl.class);
 
@@ -52,10 +52,10 @@ public class ManufacturerDAOImpl implements ManufacturerDAO {
         logger.info("Manufacturer successfully deleted. Details: " + manufacturer);
     }
 
-    public List<Manufacturer> getAll() {
+    public static List<Manufacturer> getAll() {
         Session session = dao.HibernateLoader.getSessionFactory().getCurrentSession();
         session.beginTransaction();
-        List<Manufacturer> list = session.createQuery("from Manufacter ", Manufacturer.class).list();
+        List<Manufacturer> list = session.createQuery("from model.Manufacturer ", Manufacturer.class).list();
         for (Manufacturer manufacturer : list) {
             logger.info("Manufacturer list: " + manufacturer);
         }

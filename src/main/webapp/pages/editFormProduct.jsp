@@ -9,9 +9,7 @@
 <%@page import="java.sql.*" %>
 
 <%
-    ProductDAOImpl dao = new ProductDAOImpl();
-    String id = request.getParameter("id");
-    Product p = dao.getById(Integer.parseInt(id));
+    Product p = ProductDAOImpl.getById(Integer.parseInt(request.getParameter("productId")));
 %>
 
 <h1>Edit Form</h1>
@@ -29,11 +27,6 @@
                 <input type="number" name="price" value="<%=p.getPrice()%>"/></td>
         </tr>
         <tr>
-            <td>Description:</td>
-            <td><input type="text" name="description" value="<%=p.getDescription()%>"/></td>
-        </tr>
-
-        <tr>
             <td>Manufacturer:</td>
             <td>
                 <select name="manufacturer" style="width:155px">
@@ -49,22 +42,24 @@
                     {
                     Class.forName(driverName).newInstance();;
                     con = DriverManager.getConnection(url,user,psw);
-                    String sql = "SELECT * FROM manufacturer";
+                    String sql = "SELECT name FROM management.manufacturer";
                     ps = con.prepareStatement(sql);
                     ResultSet rs = ps.executeQuery();
                     %>
                         <p>Select Name :
-                            <select>
-                                <%
-                                    while (rs.next()) {
-                                        String name = rs.getString("name");
-                                %>
-                                <option value="<%=name %>"><%=name %>
-                                </option>
-                                <%
-                                    }
-                                %>
-                            </select>
+                            <label>
+                                <select>
+                                    <%
+                                        while (rs.next()) {
+                                            String name = rs.getString("name");
+                                    %>
+                                    <option value="<%=name %>"><%=name %>
+                                    </option>
+                                    <%
+                                        }
+                                    %>
+                                </select>
+                            </label>
                         </p>
                             <%
                     }
@@ -79,7 +74,7 @@
     <tr>
         <td colspan="2"><input type="submit" value="Edit User"/></td>
     </tr>
-</table>
+    </table>
 </form>
 
 </body>

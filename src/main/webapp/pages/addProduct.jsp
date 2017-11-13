@@ -1,59 +1,56 @@
-<%@ page import="java.sql.*" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Add New Product</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/style.css">
 </head>
 <body>
-<form method="POST" action='ProductController' name="formAddProduct"><input
-        type="hidden" name="action" value="insert"/>
-    <p><b>Add New Record</b></p>
+<form name="insert_form" action="ProductController" method="post">
     <table>
+        <thead>
         <tr>
-            <td>Product ID</td>
-            <td><input type="text" name="productId" /></td>
-    </tr>
-    <tr>
-        <td>Name</td>
-        <td><input type="text" name="Name" /></td>
-    </tr>
-    <tr>
-        <td>Price</td>
-        <td><input type="number" step="0.01" name="price"/></td>
-    </tr>
-        <tr>
-            <td>Manufacturer</td>
-            <<select class="form-control" style="width: 250px;">
-                <option>Select Manufacturer</option>
-                <%
-                    try {
-                        String query = "SELECT name FROM management.manufacturer";
-                        Class.forName("com.mysql.jdbc.Driver");
-                        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/management?useSSL=false");
-                        Statement statement = connection.createStatement();
-                        ResultSet rs = statement.executeQuery(query);
-                        while (rs.next()){
-                            %>
-                            <option value="<%=rs.getInt("manufacturer_id")%>"><%=rs.getString("manufacturer_name")%></option>
-                            <%
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        System.out.println("Error" + e.getMessage());
-                    }
-
-                %>
-            </select>
+            <th colspan="3">Insert product</th>
         </tr>
-    <tr>
-        <td></td>
-        <td><input type="submit" value="Submit" /></td>
-    </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Product Name</td>
+            <td>:</td>
+            <td><input type="text" name="productName"/></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td>:</td>
+            <td><input type="text" name="price"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><input type="submit" name="insert" value="Insert"/></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="3">
+                <font color="green">
+                    <c:if test="${sessionScope.sm != null}">
+                        <c:out value="${sessionScope.sm}"/>
+                        <c:remove scope="session" var="sm"/>
+                    </c:if>
+                </font>
+                <font color="red">
+                    <c:if test="${sessionScope.em != null}">
+                        <c:out value="${sessionScope.em}"/>
+                        <c:remove scope="session" var="em"/>
+                    </c:if>
+                </font>
+            </td>
+        </tr>
+        </tfoot>
     </table>
 </form>
-<p><a href="ProductController?action=listProducts">View-All-Products</a></p>
 </body>
 </html>

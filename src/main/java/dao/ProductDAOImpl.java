@@ -2,6 +2,7 @@ package dao;
 
 import model.Product;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,20 +10,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ProductDAOImpl implements ProductDAO {
+public class ProductDAOImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductDAOImpl.class);
 
-    public void addProduct(Product product) {
-        Session session = HibernateLoader.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        session.save(product);
-        session.flush();
-        session.getTransaction().commit();
-        logger.info("Product successfully added. Details: " + product);
+    public boolean addProduct(Product product) {
+        try {
+            Session session = HibernateLoader.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            session.save(product);
+            session.flush();
+            session.getTransaction().commit();
+            logger.info("Product successfully added. Details: " + product);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
     }
 
-    public Product getById(int id) {
+    public static Product getById(int id) {
         Session session = HibernateLoader.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         Product product = session.get(Product.class, id);
@@ -34,35 +40,45 @@ public class ProductDAOImpl implements ProductDAO {
         return product;
     }
 
-    public void updateProduct(Product product) {
-        Session session = HibernateLoader.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        session.update(product);
-        session.getTransaction().commit();
-        logger.info("Product successfully loaded. Details: " + product);
-
-    }
-
-    public void deleteProduct(int id) {
-        Session session = HibernateLoader.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        Product product = session.get(Product.class, id);
-        if (product != null) {
-            session.delete(product);
+    public boolean updateProduct(Product product) {
+        try {
+            Session session = HibernateLoader.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            session.update(product);
             session.getTransaction().commit();
-        } else session.getTransaction().rollback();
-        logger.info("Product successfully loaded. Details: " + product);
+            logger.info("Product successfully loaded. Details: " + product);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
-    public Set<Product> getAll() {
+    public boolean deleteProduct(Product product) {
+        try {
+            SessionFactory factory = HibernateLoader.getSessionFactory();
+            Session session = factory.openSession();
+            session.beginTransaction();
+
+            session.delete(product);
+
+            session.getTransaction().commit();
+            session.close();
+            logger.info("Product successfully loaded. Details: " + product);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static List<Product> getAll() {
         Session session = HibernateLoader.getSessionFactory().getCurrentSession();
         session.beginTransaction();
-        List<Product> list = session.createQuery("from model.Product ", Product.class).list();
-        Set<Product> set = new HashSet<Product>(list);
+        List<Product> list = session.createQuery("FROM model.Product ", Product.class).list();
         for (Product product: list) {
             logger.info("Product list: " + product);
         }
         session.getTransaction().commit();
-        return set;
+        return list;
     }
+
 }

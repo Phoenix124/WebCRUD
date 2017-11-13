@@ -54,7 +54,7 @@ public class ManufacturerController extends HttpServlet {
         if (manufacturerId == null || manufacturerId.isEmpty()) {
             dao.addManufacter(manufacturer);
         } else {
-            manufacturer.setId(Long.parseLong(manufacturerId));
+            manufacturer.setId(Integer.parseInt(manufacturerId));
             dao.updateManufacter(manufacturer);
         }
         RequestDispatcher view = request.getRequestDispatcher(LIST_MMANUFACTERES);
