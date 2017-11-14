@@ -52,5 +52,8 @@
         </tfoot>
     </table>
 </form>
+<h2>
+    <a href="Products.jsp">All Records</a>
+</h2>
 </body>
 </html>

@@ -2,63 +2,123 @@ package controller;
 
 import dao.ManufacturerDAOImpl;
 import model.Manufacturer;
+import model.Product;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Set;
 
+@WebServlet("/ManufacturerController")
 public class ManufacturerController extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-    private static String INSERT_OR_EDIT = "web/pages/Products.jsp";
-    private static String LIST_MMANUFACTERES = "web/pages/Manufacteres.JSP";
-    private ManufacturerDAOImpl dao;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    public ManufacturerController() {
-        super();
-        dao = new ManufacturerDAOImpl();
-    }
+        PrintWriter out = response.getWriter();
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = "";
-        String action = request.getParameter("action");
 
-        if (action.equalsIgnoreCase("delete")) {
-            int manufaterId = Integer.parseInt(request.getParameter("manufacturerId"));
-            dao.deleteManufacter(manufaterId);
-            forward = LIST_MMANUFACTERES;
-            request.setAttribute("manufacturers", dao.getAll());
-        } else if (action.equalsIgnoreCase("edit")) {
-            forward = INSERT_OR_EDIT;
+        if(request.getParameter("insert") != null){
+
+            String manufacturerName = request.getParameter("name");
+
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setName(manufacturerName);
+            Set<Product> productList = manufacturer.getProducts();
+            manufacturer.setProducts((Set<Product>) request.getAttribute(String.valueOf(productList)));
+
+
+            boolean status =  new ManufacturerDAOImpl().addManufacter(manufacturer);
+            if(status){
+                request.getSession().setAttribute("sm", "Product saved successfully");
+            }else{
+                request.getSession().setAttribute("em", "Product not saved");
+            }
+
+            request.getRequestDispatcher("/addManufacturer.jsp").forward(request, response);
+
+
+        }else if(request.getParameter("update") != null){
+
+            String manufacturerName = request.getParameter("name");
             int manufacturerId = Integer.parseInt(request.getParameter("manufacturerId"));
-            Manufacturer manufacturer = dao.getById(manufacturerId);
-            request.setAttribute("manufacturer", manufacturer);
-        } else if (action.equalsIgnoreCase("listManufacturers")) {
-            forward = LIST_MMANUFACTERES;
-            request.setAttribute("manufacturers", dao.getAll());
-        } else {
-            forward = INSERT_OR_EDIT;
-        }
 
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setName(manufacturerName);
+            Set<Product> productList = manufacturer.getProducts();
+            manufacturer.setProducts((Set<Product>) request.getAttribute(String.valueOf(productList)));
+            manufacturer.setId(manufacturerId);
+
+            boolean status =  new ManufacturerDAOImpl().updateManufacter(manufacturer);
+            if(status){
+                request.getSession().setAttribute("sm", "Product update successfully");
+            }else{
+                request.getSession().setAttribute("em", "Product not update");
+            }
+
+            request.getRequestDispatcher("/editProduct.jsp?manufactureId=" + manufacturerId).forward(request, response);
+
+        }else if(request.getParameter("for").equalsIgnoreCase("delete")){
+
+            int manufacturerId = Integer.parseInt(request.getParameter("manufacturerId"));
+
+            Manufacturer m = ManufacturerDAOImpl.getById(manufacturerId);
+
+            //out.println(p.toString());
+
+            boolean status =  new ManufacturerDAOImpl().deleteManufacter(m);
+
+            if(status){
+                request.getSession().setAttribute("sm", "Product deleted successfully");
+            }else{
+                request.getSession().setAttribute("em", "Product not deleted");
+            }
+
+            request.getRequestDispatcher("/Manufacturers.jsp").forward(request, response);
+        }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName(request.getParameter("Name"));
-        String manufacturerId = request.getParameter("manufacturerId");
-        if (manufacturerId == null || manufacturerId.isEmpty()) {
-            dao.addManufacter(manufacturer);
-        } else {
-            manufacturer.setId(Integer.parseInt(manufacturerId));
-            dao.updateManufacter(manufacturer);
-        }
-        RequestDispatcher view = request.getRequestDispatcher(LIST_MMANUFACTERES);
-        request.setAttribute("manufacturers", dao.getAll());
-        view.forward(request, response);
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
 }

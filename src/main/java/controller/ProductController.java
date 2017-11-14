@@ -79,7 +79,7 @@ public class ProductController extends HttpServlet {
                 request.getSession().setAttribute("em", "Product not deleted");
             }
 
-            request.getRequestDispatcher("/addProduct.jsp").forward(request, response);
+            request.getRequestDispatcher("/Products.jsp").forward(request, response);
         }
     }
 

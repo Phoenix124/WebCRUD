@@ -11,6 +11,9 @@
     <title>JSP Page</title>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/style.css">
 </head>
+<h1>
+    <a href="<c:url value="/index.jsp"/>">Go to main menu</a>
+</h1>
 <body>
 <table border="1" style="border-collapse: collapse;" width="70%">
     <thead>
@@ -61,7 +64,7 @@
     </tfoot>
 </table>
 <h2>
-    <a href="addProduct.jsp">Add New Product</a>
+    <a href="addManufacturer.jsp">Add New Manufacturer</a>
 </h2>
 </body>
 </html>

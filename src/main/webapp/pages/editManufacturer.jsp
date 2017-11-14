@@ -1,23 +1,69 @@
-<%@ page import="dao.ManufacturerDAOImpl" %><%--
-  Created by IntelliJ IDEA.
-  User: maksim.lyahovets
-  Date: 09.11.2017
-  Time: 9:53
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="m" class="model.Manufacturer"></jsp:useBean>
-<jsp:setProperty property ="*" name ="m"/>
+<%@page import="model.Product"%>
+<%@page import="dao.ProductDAOImpl"%>
+<%@ page import="model.Manufacturer" %>
+<%@ page import="dao.ManufacturerDAOImpl" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/style.css">
+</head>
+<body>
+<form name="update_form" action="<%=request.getContextPath()%>/ManufactureController" method="post">
+    <table>
+        <thead>
+        <tr>
+            <th colspan="3">Update product</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+            Manufacturer m = ManufacturerDAOImpl.getById(Integer.parseInt(request.getParameter("manufacturerId")));
+        %>
+        <tr>
+            <td>Product Name</td>
+            <td>:</td>
+            <td>
+                <input type="hidden" name="manufacturerId" value="<%=m.getId()%>"/>
+                <input type="text" name="manufacturerName" value="<%=m.getName() %>"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Products</td>
+            <td>:</td>
+            <td><input type="text" name="products" value="<%=m.getProducts()%>"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><input type="submit" name="update" value="Update"/></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="3">
+                <font color="green">
+                    <c:if test="${sessionScope.sm != null}">
+                        <c:out value="${sessionScope.sm}"/>
+                        <c:remove scope="session" var="sm"/>
+                    </c:if>
+                </font>
+                <font color="red">
+                    <c:if test="${sessionScope.em != null}">
+                        <c:out value="${sessionScope.em}"/>
+                        <c:remove scope="session" var="em"/>
+                    </c:if>
+                </font>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</form>
 <h2>
-    <%
-        try {
-            ManufacturerDAOImpl dao = new ManufacturerDAOImpl();
-            dao.updateManufacter();
-            response.sendRedirect("Manufacturers.jsp");
-            System.out.println("Manufacturer added!");
-        }catch (Exception e){
-            e.getMessage();
-            System.out.println("Error!");
-        }
-    %>
+    <a href="Manufacturers.jsp">All Records</a>
 </h2>
+</body>
+</html>

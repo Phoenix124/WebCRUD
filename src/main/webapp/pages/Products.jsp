@@ -12,6 +12,9 @@
     <title>JSP Page</title>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/style.css">
 </head>
+<h1>
+    <a href="<c:url value="/index.jsp"/>">Go to main menu</a>
+</h1>
 <body>
 <table border="1" style="border-collapse: collapse;" width="70%">
     <thead>
