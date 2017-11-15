@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-
 @Table(name = "manufacturer",catalog = "management")
 public class Manufacturer {
     @Id

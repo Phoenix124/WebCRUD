@@ -1,3 +1,7 @@
+<%@ page import="java.util.List" %>
+<%@ page import="model.Manufacturer" %>
+<%@ page import="dao.ProductDAOImpl" %>
+<%@ page import="dao.ManufacturerDAOImpl" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -26,6 +30,22 @@
             <td>:</td>
             <td><input type="text" name="price"/></td>
         </tr>
+        <tr>
+            <td>Manufacturer</td>
+            <td>:</td>
+            <td>
+                <%
+                    List<Manufacturer> m = ManufacturerDAOImpl.getDataByManufacturerName();
+                %>
+                <select>
+                    <%  for (Manufacturer name : m){ %>
+                    <option value="m.id"><%=name%></option>
+                    <% } %>
+                </select>
+            </td>
+        </tr>
+        </tr>
+
         <tr>
             <td></td>
             <td></td>

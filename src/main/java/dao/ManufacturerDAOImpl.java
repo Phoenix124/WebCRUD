@@ -81,4 +81,14 @@ public class ManufacturerDAOImpl {
         session.getTransaction().commit();
         return list;
     }
+    public static List<Manufacturer> getDataByManufacturerName() {
+        Session session = HibernateLoader.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        List<Manufacturer> listManufacturers = session.createQuery("FROM Manufacturer", Manufacturer.class).list();
+        for (Manufacturer manufacturer : listManufacturers ) {
+            logger.info("Product list: " + manufacturer);
+        }
+        session.getTransaction().commit();
+        return listManufacturers;
+    }
 }
