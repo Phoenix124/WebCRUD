@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
-@WebServlet("/ManufacturerController")
+@WebServlet(urlPatterns = "/ManufacturerController")
 public class ManufacturerController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -34,12 +34,12 @@ public class ManufacturerController extends HttpServlet {
 
             boolean status =  new ManufacturerDAOImpl().addManufacter(manufacturer);
             if(status){
-                request.getSession().setAttribute("sm", "Product saved successfully");
+                request.getSession().setAttribute("sm", "Manufacturer saved successfully");
             }else{
-                request.getSession().setAttribute("em", "Product not saved");
+                request.getSession().setAttribute("em", "Manufacturer not saved");
             }
 
-            request.getRequestDispatcher("/addManufacturer.jsp").forward(request, response);
+            request.getRequestDispatcher("/pages/addManufacturer.jsp").forward(request, response);
 
 
         }else if(request.getParameter("update") != null){
@@ -55,12 +55,12 @@ public class ManufacturerController extends HttpServlet {
 
             boolean status =  new ManufacturerDAOImpl().updateManufacter(manufacturer);
             if(status){
-                request.getSession().setAttribute("sm", "Product update successfully");
+                request.getSession().setAttribute("sm", "Manufacturer update successfully");
             }else{
-                request.getSession().setAttribute("em", "Product not update");
+                request.getSession().setAttribute("em", "Manufacturer not update");
             }
 
-            request.getRequestDispatcher("/editProduct.jsp?manufactureId=" + manufacturerId).forward(request, response);
+            request.getRequestDispatcher("/pages/editProduct.jsp?manufactureId=" + manufacturerId).forward(request, response);
 
         }else if(request.getParameter("for").equalsIgnoreCase("delete")){
 
@@ -73,12 +73,12 @@ public class ManufacturerController extends HttpServlet {
             boolean status =  new ManufacturerDAOImpl().deleteManufacter(m);
 
             if(status){
-                request.getSession().setAttribute("sm", "Product deleted successfully");
+                request.getSession().setAttribute("sm", "Manufacturer deleted successfully");
             }else{
-                request.getSession().setAttribute("em", "Product not deleted");
+                request.getSession().setAttribute("em", "Manufacturer not deleted");
             }
 
-            request.getRequestDispatcher("/Manufacturers.jsp").forward(request, response);
+            request.getRequestDispatcher("/pages/Manufacturers.jsp").forward(request, response);
         }
     }
 

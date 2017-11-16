@@ -39,7 +39,7 @@
         <td><%= m.getName()%></td>
         <td><%= m.getProducts()%></td>
         <td><a href="editManufacturer.jsp?manufacturerId=<%= m.getId() %>"><button>Edit</button></a></td>
-        <td><a href="ManufactureController?manufacturerId=<%= m.getId() %>&&for=delete" onclick="return confirm('are you sure?')"><button>Delete</button></a></td>
+        <td><a href="<%=request.getContextPath()%>/ManufactureController?manufacturerId=<%= m.getId()%>&&for=delete" onclick="return confirm('are you sure?')"><button>Delete</button></a></td>
     </tr>
 
     <% } %>

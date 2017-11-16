@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/ProductController")
+@WebServlet(urlPatterns = "/ProductController")
 public class ProductController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -23,7 +23,7 @@ public class ProductController extends HttpServlet {
 
         if(request.getParameter("insert") != null){
 
-            String productName = request.getParameter("name");
+            String productName = request.getParameter("productName");
             double price = Double.parseDouble(request.getParameter("price"));
 
             Product product = new Product();
@@ -39,7 +39,7 @@ public class ProductController extends HttpServlet {
                 request.getSession().setAttribute("em", "Product not saved");
             }
 
-            request.getRequestDispatcher("/addProduct.jsp").forward(request, response);
+            request.getRequestDispatcher("/pages/addProduct.jsp").forward(request, response);
 
 
         }else if(request.getParameter("update") != null){
@@ -61,7 +61,7 @@ public class ProductController extends HttpServlet {
                 request.getSession().setAttribute("em", "Product not update");
             }
 
-            request.getRequestDispatcher("/editProduct.jsp?productId=" + productId).forward(request, response);
+            request.getRequestDispatcher("/pages/editProduct.jsp?productId=" + productId).forward(request, response);
 
         }else if(request.getParameter("for").equalsIgnoreCase("delete")){
 
@@ -79,7 +79,7 @@ public class ProductController extends HttpServlet {
                 request.getSession().setAttribute("em", "Product not deleted");
             }
 
-            request.getRequestDispatcher("/Products.jsp").forward(request, response);
+            request.getRequestDispatcher("/pages/Products.jsp").forward(request, response);
         }
     }
 

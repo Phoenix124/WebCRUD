@@ -9,10 +9,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>JSP Page</title>
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/style.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/style.css">
 </head>
 <body>
-<form name="insert_form" action="ProductController" method="post">
+<form name="insert_form" action="<%=request.getContextPath()%>/ProductController" method="post">
     <table>
         <thead>
         <tr>
@@ -37,9 +37,9 @@
                 <%
                     List<Manufacturer> m = ManufacturerDAOImpl.getDataByManufacturerName();
                 %>
-                <select>
+                <select name="Manufacture" id="">
                     <%  for (Manufacturer name : m){ %>
-                    <option value="m.id"><%=name%></option>
+                    <option value="name"><%=name.getName()%></option>
                     <% } %>
                 </select>
             </td>

@@ -32,11 +32,6 @@
             </td>
         </tr>
         <tr>
-            <td>Products</td>
-            <td>:</td>
-            <td><input type="text" name="products" value="<%=m.getProducts()%>"/></td>
-        </tr>
-        <tr>
             <td></td>
             <td></td>
             <td><input type="submit" name="update" value="Update"/></td>

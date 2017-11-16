@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/style.css">
 </head>
 <body>
-<form name="insert_form" action="ManufactureController" method="post">
+<form name="insert_form" action="<%=request.getContextPath()%>/ManufactureController" method="post">
     <table>
         <thead>
         <tr>

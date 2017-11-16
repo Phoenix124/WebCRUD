@@ -42,7 +42,7 @@
         <td><%= p.getPrice()%></td>
         <td><%= p.getManufacturer()%></td>
         <td><a href="editProduct.jsp?productId=<%= p.getId() %>"><button>Edit</button></a></td>
-        <td><a href="ProductController?productId=<%= p.getId() %>&&for=delete" onclick="return confirm('are you sure?')"><button>Delete</button></a></td>
+        <td><a href="<%=request.getContextPath()%>/ProductController?productId=<%= p.getId() %>&&for=delete" onclick="return confirm('are you sure?')"><button>Delete</button></a></td>
     </tr>
 
     <% } %>
