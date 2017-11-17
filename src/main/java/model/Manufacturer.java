@@ -15,7 +15,7 @@ public class Manufacturer {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "manufacturer")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "manufacturer",orphanRemoval = true)
     private Set<Product> products = new HashSet<Product>();
 
     public Manufacturer() {

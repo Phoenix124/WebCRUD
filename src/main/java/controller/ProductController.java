@@ -1,5 +1,6 @@
 package controller;
 
+import dao.ManufacturerDAOImpl;
 import dao.ProductDAOImpl;
 import model.Manufacturer;
 import model.Product;
@@ -19,7 +20,7 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
 
         PrintWriter out = response.getWriter();
-
+        ManufacturerDAOImpl dao = new ManufacturerDAOImpl();
 
         if(request.getParameter("insert") != null){
 
@@ -38,13 +39,12 @@ public class ProductController extends HttpServlet {
             }else{
                 request.getSession().setAttribute("em", "Product not saved");
             }
-
             request.getRequestDispatcher("/pages/addProduct.jsp").forward(request, response);
 
 
         }else if(request.getParameter("update") != null){
 
-            String productName = request.getParameter("name");
+            String productName = request.getParameter("productName");
             int productId = Integer.parseInt(request.getParameter("productId"));
             double price = Double.parseDouble(request.getParameter("price"));
 

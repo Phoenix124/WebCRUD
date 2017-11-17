@@ -11,6 +11,10 @@
     <title>JSP Page</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/style.css">
 </head>
+<%
+    List<Manufacturer> listManufacturers = ManufacturerDAOImpl.getAll();
+    pageContext.setAttribute("listManufacturers",listManufacturers);
+%>
 <body>
 <form name="insert_form" action="<%=request.getContextPath()%>/ProductController" method="post">
     <table>
@@ -34,18 +38,13 @@
             <td>Manufacturer</td>
             <td>:</td>
             <td>
-                <%
-                    List<Manufacturer> m = ManufacturerDAOImpl.getDataByManufacturerName();
-                %>
-                <select name="Manufacture" id="">
-                    <%  for (Manufacturer name : m){ %>
-                    <option value="name"><%=name.getName()%></option>
-                    <% } %>
+                <select name="manufacture">
+                    <c:forEach items="${listManufacturers}" var="manufacture">
+                        <option value="${manufacture.id}"><c:out value="${manufacture.name}" /></option>
+                    </c:forEach>
                 </select>
             </td>
         </tr>
-        </tr>
-
         <tr>
             <td></td>
             <td></td>

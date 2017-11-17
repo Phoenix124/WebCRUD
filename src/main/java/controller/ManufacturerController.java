@@ -24,13 +24,10 @@ public class ManufacturerController extends HttpServlet {
 
         if(request.getParameter("insert") != null){
 
-            String manufacturerName = request.getParameter("name");
+            String manufacturerName = request.getParameter("Name");
 
             Manufacturer manufacturer = new Manufacturer();
             manufacturer.setName(manufacturerName);
-            Set<Product> productList = manufacturer.getProducts();
-            manufacturer.setProducts((Set<Product>) request.getAttribute(String.valueOf(productList)));
-
 
             boolean status =  new ManufacturerDAOImpl().addManufacter(manufacturer);
             if(status){
@@ -38,7 +35,6 @@ public class ManufacturerController extends HttpServlet {
             }else{
                 request.getSession().setAttribute("em", "Manufacturer not saved");
             }
-
             request.getRequestDispatcher("/pages/addManufacturer.jsp").forward(request, response);
 
 
@@ -49,8 +45,6 @@ public class ManufacturerController extends HttpServlet {
 
             Manufacturer manufacturer = new Manufacturer();
             manufacturer.setName(manufacturerName);
-            Set<Product> productList = manufacturer.getProducts();
-            manufacturer.setProducts((Set<Product>) request.getAttribute(String.valueOf(productList)));
             manufacturer.setId(manufacturerId);
 
             boolean status =  new ManufacturerDAOImpl().updateManufacter(manufacturer);

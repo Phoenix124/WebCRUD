@@ -1,5 +1,8 @@
 <%@page import="model.Product"%>
 <%@page import="dao.ProductDAOImpl"%>
+<%@ page import="dao.ManufacturerDAOImpl" %>
+<%@ page import="model.Manufacturer" %>
+<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -9,6 +12,10 @@
     <title>JSP Page</title>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/style.css">
 </head>
+<%
+    List<Manufacturer> listManufacturers = ManufacturerDAOImpl.getAll();
+    pageContext.setAttribute("listManufacturers",listManufacturers);
+%>
 <body>
 <form name="update_form" action="<%=request.getContextPath()%>/ProductController" method="post">
     <table>
@@ -33,6 +40,17 @@
             <td>Price</td>
             <td>:</td>
             <td><input type="text" name="price" value="<%= p.getPrice()%>"/></td>
+        </tr>
+        <tr>
+            <td>Manufacturer</td>
+            <td>:</td>
+            <td>
+                <select name="manufacture">
+                    <c:forEach items="${listManufacturers}" var="manufacture">
+                        <option value="${manufacture.id}"><c:out value="${manufacture.name}" /></option>
+                    </c:forEach>
+                </select>
+            </td>
         </tr>
         <tr>
             <td></td>
