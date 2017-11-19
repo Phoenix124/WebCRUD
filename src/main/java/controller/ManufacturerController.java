@@ -39,7 +39,7 @@ public class ManufacturerController extends HttpServlet {
 
         }else if(request.getParameter("update") != null){
 
-            String manufacturerName = request.getParameter("name");
+            String manufacturerName = request.getParameter("manufacturerName");
             int manufacturerId = Integer.parseInt(request.getParameter("manufacturerId"));
 
             Manufacturer manufacturer = ManufacturerDAOImpl.getById(manufacturerId);
@@ -53,7 +53,7 @@ public class ManufacturerController extends HttpServlet {
                 request.getSession().setAttribute("em", "Manufacturer not update");
             }
 
-            request.getRequestDispatcher("/pages/editProduct.jsp?manufactureId=" + manufacturerId).forward(request, response);
+            request.getRequestDispatcher("/pages/editManufacturer.jsp?manufactureId=" + manufacturerId).forward(request, response);
 
         }else if(request.getParameter("for").equalsIgnoreCase("delete")){
 

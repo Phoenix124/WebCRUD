@@ -21,11 +21,14 @@
         </thead>
         <tbody>
         <tr>
+            <%
+                Manufacturer m = ManufacturerDAOImpl.getById(Integer.parseInt(request.getParameter("manufacturerId")));
+            %>
             <td>Product Name</td>
             <td>:</td>
             <td>
-                <input type="hidden" name="manufacturerId" value="${manufacturer.id}"/>
-                <input type="text" name="manufacturerName" value="${manufacturer.name}"/>
+                <input type="hidden" name="manufacturerId" value="<%=m.getId()%>"/>
+                <input type="text" name="manufacturerName" value="<%=request.getParameter("manufacturerName")%>"/>
             </td>
         </tr>
         <tr>
