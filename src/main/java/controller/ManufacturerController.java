@@ -2,7 +2,6 @@ package controller;
 
 import dao.ManufacturerDAOImpl;
 import model.Manufacturer;
-import model.Product;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Set;
+
 
 @WebServlet(urlPatterns = "/ManufacturerController")
 public class ManufacturerController extends HttpServlet {
@@ -43,9 +42,9 @@ public class ManufacturerController extends HttpServlet {
             String manufacturerName = request.getParameter("name");
             int manufacturerId = Integer.parseInt(request.getParameter("manufacturerId"));
 
-            Manufacturer manufacturer = new Manufacturer();
+            Manufacturer manufacturer = ManufacturerDAOImpl.getById(manufacturerId);
+            request.setAttribute("manufacturer", manufacturer);
             manufacturer.setName(manufacturerName);
-            manufacturer.setId(manufacturerId);
 
             boolean status =  new ManufacturerDAOImpl().updateManufacter(manufacturer);
             if(status){

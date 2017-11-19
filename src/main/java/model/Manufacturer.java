@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "manufacturer",catalog = "management")
 public class Manufacturer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +14,7 @@ public class Manufacturer {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "manufacturer",orphanRemoval = true)
+    @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Product> products = new HashSet<Product>();
 
     public Manufacturer() {

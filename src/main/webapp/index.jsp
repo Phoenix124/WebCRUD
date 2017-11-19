@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: maksim.lyahovets
@@ -14,9 +15,9 @@
   <body>
     <title>WebCRUD</title>
     <h1>
-      <a href="pages/Products.jsp">Products</a>
+      <a href="<c:url value="/pages/Products.jsp"/>">Products</a>
         &nbsp;&nbsp;&nbsp;
-      <a href="pages/Manufacturers.jsp">Manufacturers</a>
+      <a href="<c:url value="/pages/Manufacturers.jsp"/>">Manufacturers</a>
     <h1/>
   </body>
 </html>

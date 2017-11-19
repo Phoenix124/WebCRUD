@@ -1,30 +1,20 @@
 package model;
 
+import com.sun.javafx.beans.IDProperty;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product",catalog = "management")
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "price")
     private double price;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "manufacturer_products",
-            joinColumns = @JoinColumn(name = "manufacturer_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
     private Manufacturer manufacturer;
 
     public Product() {
     }
-
+    @Id
     public Integer getId() {
         return id;
     }
@@ -32,7 +22,7 @@ public class Product {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -40,7 +30,7 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-
+    @Column(name = "price")
     public double getPrice() {
         return price;
     }
@@ -48,7 +38,7 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
-
+    @ManyToOne
     public Manufacturer getManufacturer() {
         return manufacturer;
     }
