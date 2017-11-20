@@ -20,14 +20,14 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
 
         PrintWriter out = response.getWriter();
-        ManufacturerDAOImpl dao = new ManufacturerDAOImpl();
 
         if(request.getParameter("insert") != null){
-
+            int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");
             double price = Double.parseDouble(request.getParameter("price"));
 
             Product product = new Product();
+            product.setId(productId);
             product.setName(productName);
             product.setPrice(price);
             product.setManufacturer((Manufacturer) request.getAttribute("manufacture"));

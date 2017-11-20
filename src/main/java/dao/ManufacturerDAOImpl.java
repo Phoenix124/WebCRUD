@@ -14,7 +14,7 @@ public class ManufacturerDAOImpl {
     public boolean addManufacter(Manufacturer manufacturer) {
 
         try {
-            Session session = dao.HibernateLoader.getSessionFactory().getCurrentSession();
+            Session session = HibernateLoader.getSessionFactory().getCurrentSession();
             session.beginTransaction();
             session.save(manufacturer);
             session.flush();
@@ -29,7 +29,7 @@ public class ManufacturerDAOImpl {
     }
 
     public static Manufacturer getById(int id) {
-        Session session = dao.HibernateLoader.getSessionFactory().getCurrentSession();
+        Session session = HibernateLoader.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         Manufacturer manufacturer = session.get(Manufacturer.class, id);
         if (manufacturer != null) {
@@ -43,7 +43,7 @@ public class ManufacturerDAOImpl {
     public boolean updateManufacter(Manufacturer manyfacter) {
 
         try {
-            Session session = dao.HibernateLoader.getSessionFactory().getCurrentSession();
+            Session session = HibernateLoader.getSessionFactory().getCurrentSession();
             session.beginTransaction();
 
             session.update(manyfacter);
@@ -58,7 +58,7 @@ public class ManufacturerDAOImpl {
 
     public boolean deleteManufacter(Manufacturer manufacturer) {
         try {
-            Session session = dao.HibernateLoader.getSessionFactory().getCurrentSession();
+            Session session = HibernateLoader.getSessionFactory().getCurrentSession();
             session.beginTransaction();
 
             session.delete(manufacturer);
@@ -72,7 +72,7 @@ public class ManufacturerDAOImpl {
     }
 
     public static List<Manufacturer> getAll() {
-        Session session = dao.HibernateLoader.getSessionFactory().getCurrentSession();
+        Session session = HibernateLoader.getSessionFactory().openSession();
         session.beginTransaction();
         List<Manufacturer> list = session.createQuery("from model.Manufacturer ", Manufacturer.class).list();
         for (Manufacturer manufacturer : list) {
@@ -82,9 +82,9 @@ public class ManufacturerDAOImpl {
         return list;
     }
     public static List<Manufacturer> getDataByManufacturerName() {
-        Session session = HibernateLoader.getSessionFactory().getCurrentSession();
+        Session session = HibernateLoader.getSessionFactory().openSession();
         session.beginTransaction();
-        List<Manufacturer> listManufacturers = session.createQuery("FROM Manufacturer", Manufacturer.class).list();
+        List<Manufacturer> listManufacturers = session.createQuery("FROM Manufacturer m", Manufacturer.class).getResultList();
         for (Manufacturer manufacturer : listManufacturers ) {
             logger.info("Manufacturer list: " + manufacturer);
         }

@@ -69,7 +69,7 @@ public class ProductDAOImpl {
     }
 
     public static List<Product> getAll() {
-        Session session = HibernateLoader.getSessionFactory().getCurrentSession();
+        Session session = HibernateLoader.getSessionFactory().openSession();
         session.beginTransaction();
         List<Product> list = session.createQuery("FROM model.Product ", Product.class).list();
         for (Product product: list) {

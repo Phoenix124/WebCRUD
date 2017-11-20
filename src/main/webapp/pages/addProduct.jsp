@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/style.css">
 </head>
 <%
-    List<Manufacturer> listManufacturers = ManufacturerDAOImpl.getAll();
+    List<Manufacturer> listManufacturers = ManufacturerDAOImpl.getDataByManufacturerName();
     pageContext.setAttribute("listManufacturers",listManufacturers);
 %>
 <body>
@@ -24,6 +24,11 @@
         </tr>
         </thead>
         <tbody>
+        <tr>
+            <td>Product ID</td>
+            <td>:</td>
+            <td><input type="number" name="productId"/></td>
+        </tr>
         <tr>
             <td>Product Name</td>
             <td>:</td>
@@ -40,9 +45,12 @@
             <td>
                 <select name="manufacture">
                     <c:forEach items="${listManufacturers}" var="manufacture">
-                        <option value="${manufacture.id}"><c:out value="${manufacture.name}" /></option>
+                        <option value="${manufacture.id}"><c:out value="${manufacture.name}"/></option>
                     </c:forEach>
                 </select>
+                <%
+                    System.out.println(listManufacturers.toString());
+                %>
             </td>
         </tr>
         <tr>

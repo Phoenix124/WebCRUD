@@ -1,4 +1,7 @@
 import dao.HibernateLoader;
+import dao.ManufacturerDAOImpl;
+import dao.ProductDAOImpl;
+import model.Manufacturer;
 import model.Product;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,11 +13,12 @@ public class HibernateTest {
     public static void main(String[] args) {
         SessionFactory sessionFactory = HibernateLoader.getSessionFactory();
         Session session = sessionFactory.openSession();
-        List<Product> products = null;
+        ManufacturerDAOImpl dao = new ManufacturerDAOImpl();
+        List<Manufacturer> products = null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM model.Product");
-            products = query.getResultList();
+            Query query = session.createQuery("FROM Manufacturer m");
+            products = dao.getDataByManufacturerName();
 
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -23,8 +27,6 @@ public class HibernateTest {
         } finally {
             sessionFactory.close();
         }
-        for (Product product : products){
-            System.out.println(product.toString());
-        }
+        System.out.println(products);
     }
 }
