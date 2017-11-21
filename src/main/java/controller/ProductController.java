@@ -25,12 +25,13 @@ public class ProductController extends HttpServlet {
             int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");
             double price = Double.parseDouble(request.getParameter("price"));
-
+            String manufactureName = request.getParameter("manufacture");
+            Manufacturer manufacturer = ManufacturerDAOImpl.getById(Integer.parseInt(manufactureName));
             Product product = new Product();
             product.setId(productId);
             product.setName(productName);
             product.setPrice(price);
-            product.setManufacturer((Manufacturer) request.getAttribute("manufacture"));
+            product.setManufacturer(manufacturer);
 
 
             boolean status =  new ProductDAOImpl().addProduct(product);

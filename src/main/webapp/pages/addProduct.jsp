@@ -45,12 +45,9 @@
             <td>
                 <select name="manufacture">
                     <c:forEach items="${listManufacturers}" var="manufacture">
-                        <option value="${manufacture.id}"><c:out value="${manufacture.name}"/></option>
+                        <option value="${manufacture.id}" selected><c:out value="${manufacture.name}"/></option>
                     </c:forEach>
                 </select>
-                <%
-                    System.out.println(listManufacturers.toString());
-                %>
             </td>
         </tr>
         <tr>
