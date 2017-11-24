@@ -5,4 +5,4 @@ CRUD Web Application
 
 Used Servlet/JSP API, Hibernate, MySQL
 
-This webapplication implements crud operations for entities based in database
+This web application implements crud operations for entities based in database
